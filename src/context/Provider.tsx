@@ -5,6 +5,7 @@ import _ from 'lodash'
 export const GlobalContext = createContext({})
 
 export const GlobalProvider = ({
+  userLogged,
   children,
   currentUser,
   replyTop,
@@ -25,8 +26,9 @@ export const GlobalProvider = ({
   removeEmoji,
   advancedInput
 }: {
+  userLogged: boolean
   children: any
-  currentUser?: {
+  currentUser: {
     currentUserId: string
     currentUserImg: string
     currentUserProfile?: string | undefined
@@ -67,7 +69,6 @@ export const GlobalProvider = ({
   currentData?: Function
   advancedInput?: boolean
 }) => {
-  const [currentUserData] = useState(currentUser)
   const [data, setData] = useState<
     Array<{
       userId: string
@@ -102,6 +103,18 @@ export const GlobalProvider = ({
       currentData(data)
     }
   }, [data])
+
+  const [currentUserData, setCurrentUserData] = useState<typeof currentUser>()
+  const [pippo, setPippo] = useState<typeof currentUser>()
+
+  useEffect(() => {
+    if (userLogged) {
+      setCurrentUserData(currentUser)
+      setPippo(currentUser)
+    } else {
+      setCurrentUserData(null) //problema!
+    }
+  }, [userLogged, currentUser])
 
   const handleAction = (id: string, edit: boolean) => {
     if (edit) {
@@ -220,6 +233,9 @@ export const GlobalProvider = ({
   return (
     <GlobalContext.Provider
       value={{
+        pippo: pippo,
+        userLogged: userLogged,
+        setCurrentUserData: setCurrentUserData,
         currentUserData: currentUserData,
         replyTop: replyTop,
         data: data,

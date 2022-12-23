@@ -35,6 +35,7 @@ const CommentSection = ({
     )
   }
   const globalStore: any = useContext(GlobalContext)
+  console.log('globalStore', globalStore)
 
   const totalComments = () => {
     let count = 0
@@ -51,11 +52,16 @@ const CommentSection = ({
         {globalStore.commentsCount || totalComments()}{' '}
         {totalComments() === 1 ? 'Comment' : 'Comments'}
       </span>
+
       <hr className='hr-style' style={hrStyle} />
-      {globalStore.currentUserData === null ? (
+      {!globalStore.userLogged && !globalStore.currentUserData ? (
         loginMode()
       ) : (
-        <InputField formStyle={{ margin: '10px 0px' }} imgDiv={{ margin: 0 }} />
+        <InputField
+          userData={globalStore.currentUserData}
+          formStyle={{ margin: '10px 0px' }}
+          imgDiv={{ margin: 0 }}
+        />
       )}
 
       {globalStore.data.length > 0 ? (

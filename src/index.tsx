@@ -4,6 +4,8 @@ import GlobalProvider from './context/Provider'
 import './Index.scss'
 
 interface CommentSectionProps {
+  userLogged: boolean
+  userData?: any | null
   currentUser: {
     currentUserId: string
     currentUserImg: string
@@ -55,6 +57,7 @@ interface CommentSectionProps {
 }
 
 export const CommentSection = ({
+  userLogged,
   currentUser,
   customImg,
   inputStyle,
@@ -81,6 +84,7 @@ export const CommentSection = ({
 }: CommentSectionProps) => {
   return (
     <GlobalProvider
+      userLogged={userLogged}
       currentUser={currentUser}
       replyTop={replyTop}
       customImg={customImg}

@@ -5,6 +5,12 @@ import { GlobalContext } from '../../context/Provider'
 import EmojiInput from './EmojiInput'
 
 interface RegularInputProps {
+  userData: {
+    currentUserId: string
+    currentUserImg: string
+    currentUserProfile?: string | undefined
+    currentUserFullName: string
+  } | null
   formStyle?: object
   comId?: string
   mode?: string
@@ -20,6 +26,7 @@ interface RegularInputProps {
 }
 
 const RegularInput = ({
+  userData,
   formStyle,
   imgDiv,
   imgStyle,
@@ -34,6 +41,7 @@ const RegularInput = ({
   setText
 }: RegularInputProps) => {
   const globalStore: any = useContext(GlobalContext)
+  console.log('context from input', globalStore)
 
   return (
     <form
@@ -42,16 +50,9 @@ const RegularInput = ({
       onSubmit={() => handleSubmit}
     >
       <div className='userImg' style={imgDiv}>
-        <a
-          target='_blank'
-          href={globalStore.currentUserData.currentUserProfile}
-        >
+        <a target='_blank' href={userData?.currentUserProfile}>
           <img
-            src={
-              globalStore.customImg ||
-              customImg ||
-              globalStore.currentUserData.currentUserImg
-            }
+            src={globalStore.customImg || customImg || userData?.currentUserImg}
             style={globalStore.imgStyle || imgStyle}
             alt='userIcon'
             className='imgdefault'
@@ -67,7 +68,7 @@ const RegularInput = ({
               : globalStore.inputStyle || inputStyle
           }
           type='text'
-          placeholder='Type your reply here.'
+          placeholder='Type your reply here...'
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
